@@ -1,4 +1,5 @@
-var server = require('nodebootstrap-server');
+var server = require('nodebootstrap-server'),
+    mongoose = require('mongoose');
 
 server.setup(function(runningApp) {
   
@@ -22,5 +23,13 @@ server.setup(function(runningApp) {
   // If you need websockets:
   // var socketio = require('socket.io')(runningApp.http);
   // require('fauxchatapp')(socketio);
+
+  //connect to Mongo (mongoose):
+  mongoose.connect('mongodb://localhost/test');
+  mongoose.connection.on('error', console.error.bind(console, 'connection error: '));
+  mongoose.connection.on('open', function(callback) {
+    console.log("Connected to Mongoose...");
+  });
   
+  //routes.initialize(app);
 });
