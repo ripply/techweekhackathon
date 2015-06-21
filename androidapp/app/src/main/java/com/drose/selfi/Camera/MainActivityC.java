@@ -31,7 +31,7 @@ public class MainActivityC extends CameraActivity implements
         /**
          * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
          */
-        private NavigationDrawerFragment mNavigationDrawerFragment;
+        public static NavigationDrawerFragment mNavigationDrawerFragment;
 
         /**
          * Used to store the last screen title. For use in {@link #restoreActionBar()}.
@@ -41,17 +41,19 @@ public class MainActivityC extends CameraActivity implements
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+            setContentView(R.layout.activity_main_camera);
 
 
             mNavigationDrawerFragment = (NavigationDrawerFragment)
                     getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
             mTitle = getTitle();
 
-            // Set up the drawer.
-            mNavigationDrawerFragment.setUp(
-                    R.id.navigation_drawer,
-                    (DrawerLayout) findViewById(R.id.drawer_layout));
+            if (mNavigationDrawerFragment != null) {
+                // Set up the drawer.
+                mNavigationDrawerFragment.setUp(
+                        R.id.navigation_drawer,
+                        (DrawerLayout) findViewById(R.id.drawer_layout));
+            }
         }
 
         @Override
@@ -122,13 +124,15 @@ public class MainActivityC extends CameraActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!mNavigationDrawerFragment.isDrawerOpen()) {
-            // Only show items in the action bar relevant to this screen
-            // if the drawer is not showing. Otherwise, let the drawer
-            // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.menu_main, menu);
-            restoreActionBar();
-            return true;
+        if (mNavigationDrawerFragment != null) {
+            if (!mNavigationDrawerFragment.isDrawerOpen()) {
+                // Only show items in the action bar relevant to this screen
+                // if the drawer is not showing. Otherwise, let the drawer
+                // decide what to show in the action bar.
+                getMenuInflater().inflate(R.menu.menu_main, menu);
+                restoreActionBar();
+                return true;
+            }
         }
         return super.onCreateOptionsMenu(menu);
     }
