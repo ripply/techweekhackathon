@@ -3,6 +3,14 @@
     package="com.drose.selfi" >
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+<<<<<<< HEAD
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+=======
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>11
+>>>>>>> 8b2b0230607302c6d46b7317867a8249098b66c1
 
     <application
         android:allowBackup="true"
@@ -27,7 +35,7 @@
             android:label="MPact" >
         </service>
         <service
-            android:name=".MonitorService"
+            android:name="com.drose.selfi.MonitorService"
             android:enabled="true"
             android:exported="false" >
         </service>

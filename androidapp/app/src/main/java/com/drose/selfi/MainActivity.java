@@ -1,11 +1,9 @@
 package com.drose.selfi;
 
-import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +13,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.drose.selfi.Camera.MainActivityC;
 import com.zebra.mpact.mpactclient.MPactBeaconType;
 import com.zebra.mpact.mpactclient.MPactClient;
 import com.zebra.mpact.mpactclient.MPactClientConsumer;
@@ -25,6 +24,8 @@ import com.zebra.mpact.mpactclient.MPactTag;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
+
+
 
 public class MainActivity extends ActionBarActivity implements MPactClientConsumer, MPactClientNotifier,
         Switch.OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
@@ -44,14 +45,20 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
         inRange = false;
         hello = (TextView)findViewById(R.id.hello);
 
+        AccountManager.getInstance().setSharedPreferences(getPreferences(MODE_PRIVATE));
+
         mpactClient = MPactClient.getInstanceForApplication(this.getApplicationContext());
         mpactClient.bind(this);
+
+        RegionNotifier.getInstanceForApplication(getApplicationContext()).setMainActivity(this);
 
         cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
 
-        Intent createAccount = new Intent(this, CreateAccount.class);
-        startActivity(createAccount);
+        if (!AccountManager.getInstance().signedIn()) {
+            Intent createAccount = new Intent(this, CreateAccount.class);
+            startActivity(createAccount);
+        }
     }
 
     @Override
@@ -123,6 +130,14 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
             default:
                 break;
         }
+    }
+
+    public void onInRange(){
+        Intent intent = new Intent(this, MainActivityC.class);
+        if(inRange==true) {
+            startActivity(intent);
+        }
+
     }
 
     @Override
