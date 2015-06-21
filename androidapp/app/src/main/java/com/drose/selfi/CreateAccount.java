@@ -55,6 +55,11 @@ public class CreateAccount extends ActionBarActivity {
                             }
                         });
                     }
+
+                    @Override
+                    public void entryComplete(boolean success) {
+                        
+                    }
                 });
             }
         });

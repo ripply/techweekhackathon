@@ -6,4 +6,5 @@ package com.drose.selfi;
 public interface AccountCallback {
     public void loginComplete(boolean success);
     public void signupComplete(boolean success);
+    public void entryComplete(boolean success);
 }

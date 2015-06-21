@@ -65,6 +65,11 @@ public class AccountManager {
         signupTask.execute();
     }
 
+    public void enter(String url, String locationTag, AccountCallback callback) {
+        EnterTask enterTask = new EnterTask(url, locationTag, callback);
+        enterTask.execute();
+    }
+
     public void logout() {
         if (userId != null || userId.length() > 0) {
             if (this.preferences != null) {
@@ -100,6 +105,37 @@ public class AccountManager {
             this.userId = id;
         }
     }
+
+    private class EnterTask extends AsyncTask {
+
+        String url;
+        String location;
+        AccountCallback callback;
+
+        public EnterTask(String url, String location, AccountCallback callback) {
+            this.url = url;
+            this.location = location;
+            this.callback = callback;
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            List<NameValuePair> values = new ArrayList<NameValuePair>(2);
+            values.add(new BasicNameValuePair("url", url));
+            values.add(new BasicNameValuePair("location", location));
+            values.add(new BasicNameValuePair("id", userId));
+
+            HttpResponse response = postData("/entry", values);
+            if (response != null && response.getStatusLine() != null) {
+                callback.entryComplete(response.getStatusLine().getStatusCode() == 200);
+                return null;
+            }
+
+            callback.entryComplete(false);
+            return null;
+        }
+    }
+
 
     private class LoginTask extends AsyncTask {
 

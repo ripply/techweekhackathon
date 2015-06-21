@@ -45,6 +45,11 @@ public class LoginActivity extends ActionBarActivity {
             public void signupComplete(boolean success) {
                 // not used here
             }
+
+            @Override
+            public void entryComplete(boolean success) {
+
+            }
         });
     }
 
