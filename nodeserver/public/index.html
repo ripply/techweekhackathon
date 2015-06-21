@@ -19,7 +19,7 @@
         $.ajax({
             url: '/pick_winner',
             success: function(data, textStatus, jqXHR) {
-                alert(data);
+                alert("A winrar is you!!!!!!!!\nMr. " + data._id + "\n COME ON DOWNNNN");
             }
         })
     });
@@ -48,9 +48,9 @@
       <h3 class="text-center">List of entries</h3>
     </div>
     <table>
-      {{#each Entries}}
+      {{#each entries}}
       <tr>
-        <td>{{url}}</td>
+        <td>{{id}}</td>
       </tr>
       {{/each}}
     </table>
