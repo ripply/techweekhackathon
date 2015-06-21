@@ -11,18 +11,18 @@ var Login = new Schema ({
 });
 
 var Entry = new Schema({
-	id: 		{type: String
+	id: 		{type: String,
 				 unique: true},
 	url:  		{type: String} 
 });
 	
 var Admin = new Schema({
-	entries: [Entry],
+	entries: [Entry]
 	
-})
+});
 
 module.exports = {
 	Login: Login,
 	Entry: Entry
-}
+};
 

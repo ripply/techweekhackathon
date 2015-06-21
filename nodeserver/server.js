@@ -46,13 +46,12 @@ server.setup(function(runningApp) {
     var password = req.body.password;
 
     console.log("POST /login " + username + ":" + password);
-    res.status(200).json({status: 'ok'});
 
     var User = mongoose.model('Login', models.Login);
 
     User.findOne({user: username, password: password}, function (err, user){
-      if (err) return handleError(err);
-      console.dir(username);
+      if (err) return res.status(403).json({status: 'UNAUTHORIZED'});
+      res.status(200).json({id: user.id});
     });
 
   });
