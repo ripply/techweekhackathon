@@ -2,6 +2,7 @@ package com.drose.selfi;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.RemoteException;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -48,6 +49,9 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
 
         cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
+
+        //Intent createAccount = new Intent(this, CreateAccount.class);
+        //startActivity(createAccount);
     }
 
     @Override
@@ -55,6 +59,12 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mpactClient.unBind(this);
     }
 
     @Override
@@ -128,8 +138,12 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
                 break;
         }
 
-        this.major = major;
-        this.minor = minor;
+        if (major != null) {
+            this.major = major.intValue();
+        }
+        if (minor != null) {
+            this.minor = minor.intValue();
+        }
     }
 
     @Override
