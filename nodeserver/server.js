@@ -61,7 +61,7 @@ server.setup(function(runningApp) {
     var Entry = mongoose.model('Entry', models.Entry);
 
     Entry.find(function (err, contestants){      
-      if (err) return res.status(403).json({status: "ERROR"});   
+      if (err) return res.status(403).json(err);
       //console.log(contestants); //test to see if array is passing contestants
       var rand = contestants[Math.floor(Math.random() * contestants.length)];
       res.status(200).json(rand);
@@ -86,7 +86,7 @@ server.setup(function(runningApp) {
     });
   });
 
-  runningApp.post('/delete_entry', function(req, res){
+  runningApp.delete('/entry', function(req, res){
     var Entry = mongoose.model('Entry', models.Entry);
 
     Entry.remove({}, function(err) {

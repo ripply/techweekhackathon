@@ -1,0 +1,82 @@
+<html>
+<head>
+    <title>App</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<script src="bower_components/jquery/jquery.js"></script>
+<script src="bower_components/underscore/underscore.js"></script>
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/backbone/backbone.js"></script>
+<script src="bower_components/marionette/lib/backbone.marionette.js"></script>
+<script src="bower_components/ractive/ractive.js"></script>
+<script src="bower_components/ractive-adaptors-backbone/dist/ractive-adaptors-backbone.js"></script>
+
+<h3 class="text-center"><button id="raffle" class="btn btn-primary">Raffle!</button></h3>
+
+<script>
+    $('#raffle').click(function() {
+        $.ajax({
+            url: '/pick_winner',
+            success: function(data, textStatus, jqXHR) {
+                alert();
+            }
+        })
+    });
+</script>
+
+<div id="content" class="page-fluid"></div>
+
+<script>
+    window.API = "";
+    var EntryModel = Backbone.Model.extend({
+        idAttribute: '_id',
+
+        urlRoot: window.API + '/list_entries'
+    });
+
+    var EntryCollection = Backbone.Collection.extend({
+        model: EntryModel,
+        url: function() {
+            return window.API + '/list_entries';
+        }
+    });
+</script>
+
+<script id="template-ractive-entry-view" type="text/ractive">
+    <div class="jumbotron">
+      <h3 class="text-center">List of entries</h3>
+    </div>
+    <table>
+      {{#each Entries}}
+      <tr>
+        <td></td>
+      </tr>
+      {{/each}}
+    </table>
+</script>
+
+<script>
+    var EntryView = Ractive.extend({
+        el: '#content',
+        template: '#template-ractive-entry-view',
+        adapt: ['Backbone']
+    });
+</script>
+
+<script>
+    var entries = new EntryCollection();
+    entries.fetch({
+        success: function() {
+            console.log("Successfully fetched entries");
+        },
+        error: function() {
+            console.log("Failed to fetch entries");
+            window.alert("Failed to fetch entries, refresh the page");
+        }
+    });
+    new EntryView({data: entries});
+</script>
+
+</body>
+</html>
