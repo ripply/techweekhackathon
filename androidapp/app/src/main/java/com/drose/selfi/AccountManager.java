@@ -239,7 +239,7 @@ public class AccountManager {
         HttpClient httpclient = new DefaultHttpClient();
         URI uri;
         try {
-            uri = new URI("http", null, url, 80, resource, null, null);
+            uri = new URI("http", null, url, 3000, resource, null, null);
         } catch (URISyntaxException e) {
             e.printStackTrace();
             return null;
