@@ -44,14 +44,20 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
         inRange = false;
         hello = (TextView)findViewById(R.id.hello);
 
+        AccountManager.getInstance().setSharedPreferences(getPreferences(MODE_PRIVATE));
+
         mpactClient = MPactClient.getInstanceForApplication(this.getApplicationContext());
         mpactClient.bind(this);
+
+        RegionNotifier.getInstanceForApplication(getApplicationContext()).setMainActivity(this);
 
         cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
 
-        Intent createAccount = new Intent(this, CreateAccount.class);
-        startActivity(createAccount);
+        if (!AccountManager.getInstance().signedIn()) {
+            Intent createAccount = new Intent(this, CreateAccount.class);
+            startActivity(createAccount);
+        }
     }
 
     @Override

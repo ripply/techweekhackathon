@@ -1,6 +1,8 @@
 package com.drose.selfi;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -10,8 +12,14 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -22,7 +30,10 @@ import java.util.List;
  */
 public class AccountManager {
 
+    public static String TAG = "AccountManager";
+
     private static AccountManager _instance;
+    private SharedPreferences preferences;
 
     public static AccountManager getInstance() {
         if (_instance == null) {
@@ -38,6 +49,12 @@ public class AccountManager {
 
     private String userId;
     private String url;
+    public void setSharedPreferences(SharedPreferences preferences) {
+        this.preferences = preferences;
+        if (userId == null) {
+            userId = preferences.getString("id", "");
+        }
+    }
 
     public void login(String username, String password, AccountCallback callback) {
         LoginTask loginTask = new LoginTask(username, password, callback);
@@ -47,6 +64,31 @@ public class AccountManager {
     public void signup(String username, String password, String number, AccountCallback callback) {
         SignupTask signupTask = new SignupTask(username, password, number, callback);
         signupTask.execute(null);
+    }
+
+    public boolean signedIn() {
+        if (userId == null || userId.length() == 0) {
+            if (preferences != null) {
+                userId = preferences.getString("id", "");
+            }
+        }
+
+        return userId != null && userId.length() > 0;
+    }
+
+    private void storeUserId(String id) {
+        if (id != null && id.length() > 0) {
+            if (preferences != null) {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("id", id);
+                if (editor.commit()) {
+                    Log.i(TAG, "Successfully saved userid: " + id);
+                } else {
+                    Log.e(TAG, "FAILED to save userid: " + id);
+                }
+            }
+            this.userId = id;
+        }
     }
 
     private class LoginTask extends AsyncTask {
@@ -69,6 +111,23 @@ public class AccountManager {
 
             HttpResponse response = postData("/user", values);
             if (response != null && response.getStatusLine() != null) {
+                if (response.getStatusLine().getStatusCode() == 200) {
+                    try {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                        StringBuilder builder = new StringBuilder();
+                        for (String line = null; (line = reader.readLine()) != null; ) {
+                            builder.append(line).append("\n");
+                        }
+                        JSONTokener tokener = new JSONTokener(builder.toString());
+                        JSONObject jsonObject = new JSONObject(tokener);
+                        String id = jsonObject.getString("id");
+                        storeUserId(id);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
                 callback.loginComplete(response.getStatusLine().getStatusCode() == 200);
                 return null;
             }
@@ -102,13 +161,25 @@ public class AccountManager {
             HttpResponse response = postData("/user", values);
             if (response != null && response.getStatusLine() != null) {
                 if (response.getStatusLine().getStatusCode() == 200) {
-                    List<NameValuePair> values2 = new ArrayList<NameValuePair>(2);
-                    values.add(new BasicNameValuePair("user", username));
-                    values.add(new BasicNameValuePair("password", password));
+                    try {
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                        StringBuilder builder = new StringBuilder();
+                        for (String line = null; (line = reader.readLine()) != null; ) {
+                            builder.append(line).append("\n");
+                        }
+                        JSONTokener tokener = new JSONTokener(builder.toString());
+                        JSONObject jsonObject = new JSONObject(tokener);
+                        String id = jsonObject.getString("id");
+                        storeUserId(id);
 
-                    HttpResponse response2 = postData("/login", values);
-                    callback.signupComplete(true);
-                    return null;
+                        callback.signupComplete(true);
+                        return null;
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    callback.signupComplete(false);
                 }
             }
 
