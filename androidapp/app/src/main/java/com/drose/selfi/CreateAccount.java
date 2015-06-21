@@ -34,7 +34,7 @@ public class CreateAccount extends ActionBarActivity {
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AccountManager.getInstance().signup(editTextUserName.getText().toString(), editTextPassword.getText().toString(), number, new AccountCallback() {
+                AccountManager.getInstance().signup(editTextUserName.getText().toString(), editTextPassword.getText().toString(), getPhoneNumber(), new AccountCallback() {
                     @Override
                     public void loginComplete(boolean success) {
 
