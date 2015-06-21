@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
     int major;
     int minor;
     public static String beaconUuid;
-    boolean goawayok; //yes i named a variable this, im sleepy
+    boolean goawayok;
 
     Button buttonLogout;
 
@@ -173,7 +173,7 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
 
     public void onInRange(){
         Intent intent = new Intent(this, MainActivityC.class);
-        if(inRange==true) {
+        if(inRange==true && goawayok) {
             goawayok = false;
             startActivity(intent);
         }

@@ -155,7 +155,7 @@ public class AccountManager {
             values.add(new BasicNameValuePair("user", username));
             values.add(new BasicNameValuePair("password", password));
 
-            HttpResponse response = postData("/user", values);
+            HttpResponse response = postData("/login", values);
             if (response != null && response.getStatusLine() != null) {
                 if (response.getStatusLine().getStatusCode() == 200) {
                     try {
@@ -168,14 +168,14 @@ public class AccountManager {
                         JSONObject jsonObject = new JSONObject(tokener);
                         String id = jsonObject.getString("id");
                         storeUserId(id);
+                        callback.loginComplete(response.getStatusLine().getStatusCode() == 200);
+                        return null;
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-                callback.loginComplete(response.getStatusLine().getStatusCode() == 200);
-                return null;
             }
 
             callback.loginComplete(false);

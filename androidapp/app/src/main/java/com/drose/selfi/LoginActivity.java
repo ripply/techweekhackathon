@@ -8,23 +8,39 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
 public class LoginActivity extends ActionBarActivity {
 
     Button buttonSignUp;
+    Button buttonLogin;
+
+    EditText editTextUsername;
+    EditText editTextPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        editTextUsername = (EditText) findViewById(R.id.editText3);
+        editTextPassword = (EditText) findViewById(R.id.editText4);
+
         buttonSignUp = (Button) findViewById(R.id.buttonSignUp);
         buttonSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchCreateAccountActivity();
+            }
+        });
+
+        buttonLogin = (Button) findViewById(R.id.button2);
+        buttonLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login(editTextUsername.getText().toString(), editTextPassword.getText().toString());
             }
         });
     }
@@ -37,7 +53,12 @@ public class LoginActivity extends ActionBarActivity {
                 if (success) {
                     goMainActivity();
                 } else {
-                    Toast.makeText(context, "Failed to login", Toast.LENGTH_SHORT).show();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "Failed to login", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             }
 
