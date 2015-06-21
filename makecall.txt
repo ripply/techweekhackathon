@@ -1,0 +1,17 @@
+
+
+curl -X POST -v --user cSBDurL3fAKUXb4O8QME2wJ -H "Content-Type: application/json" -d '{
+    "destination": 8159807857,
+    "internal_caller_id_number":"8159807857",
+    "internal_caller_id_name": "Six Flags",
+    "destination_type": "outbound",
+    "schedule": "+4 seconds",
+    "application": "Demo Application",
+}' https://api.us1.corvisa.io/channel/schedule
+
+
+
+
+Key: cSBDurL3fAKUXb4O8QME2wJ
+
+Secret: JqEetdV/5jaB0.m$W2yiho!N7URZDkCnz
