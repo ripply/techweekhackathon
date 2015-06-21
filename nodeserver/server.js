@@ -37,8 +37,8 @@ server.setup(function(runningApp) {
     });
 
     user.save(function(err, user) {           //save new user
-      if (err || user == null) {return res.status(403).json({status: "ERROR"});}
-      res.status(200).json({status: 'ok'});
+      if (err || user == null) {return res.status(403).json(err);}
+      res.status(200).json({id: user.id});
     });
   });
 
