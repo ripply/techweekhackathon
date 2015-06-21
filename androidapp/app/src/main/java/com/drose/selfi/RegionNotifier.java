@@ -19,7 +19,6 @@ public class RegionNotifier implements MPactClientNotifier {
     private static RegionNotifier client = null;
     private Context context;
     private int regionState = MPactClientNotifier.OUTSIDE;
-
     private MainActivity mainActivity = null;
 
     public static RegionNotifier getInstanceForApplication(Context context) {
@@ -41,9 +40,9 @@ public class RegionNotifier implements MPactClientNotifier {
     @Override
     public void didDetermineState(int state) {
         if(state == MPactClientNotifier.INSIDE) {
-            notify("You have entered the MPact region");
+            notify("Nows the perfect time for a selfie! Win prizes!");
         } else if(state == MPactClientNotifier.OUTSIDE) {
-            notify("You are not in the MPact region");
+            notify("");
         }
         //updateActivityRegionState(state);
         regionState = state;
@@ -73,14 +72,14 @@ public class RegionNotifier implements MPactClientNotifier {
         // Generate a notification
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 //.setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("MPact Notifier")
+                .setContentTitle("Selfie Opportunity!")
                 .setContentText(msg);
         Intent resultIntent = new Intent(context, MainActivity.class);
-        //TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        //stackBuilder.addParentStack(MainActivity.class);
-        //stackBuilder.addNextIntent(resultIntent);
-        //PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        //mBuilder.setContentIntent(resultPendingIntent);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(1, mBuilder.build());
@@ -90,5 +89,9 @@ public class RegionNotifier implements MPactClientNotifier {
         PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.FULL_WAKE_LOCK|PowerManager.ACQUIRE_CAUSES_WAKEUP, "Mpact alert");
         wl.acquire(3000);
         wl.release();
+    }
+
+    public void setMainActivity(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
     }
 }
