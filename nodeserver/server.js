@@ -1,5 +1,6 @@
 var server = require('nodebootstrap-server'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    models = require('models.js');
 
 server.setup(function(runningApp) {
 
@@ -20,29 +21,62 @@ server.setup(function(runningApp) {
   runningApp.use('/hello', require('hello')); // attach to sub-route
   runningApp.use(require('routes')); // attach to root route
 
-  runningApp.post('/user', function(req, res) {
+  runningApp.post('/user', function(req, res) { //create new user
     var username = req.body.user;
     var password = req.body.password;
 
     console.log("POST /user " + username + ":" + password);
     res.status(200).json({status: 'ok'});
+
+    var login = mongoose.model('Login', models.Login); //create Login object
+
+    var user = new login ({                     // Json for new user
+      user:     username,
+      password: password
+    });
+
+    user.save(function(err, user) {           //save new user
+      if (err) return console.error(err);
+      console.dir(user);
+    });
   });
 
-  runningApp.post('/login', function(req, res) {
+  runningApp.post('/login', function(req, res) { //Query database
     var username = req.body.user;
     var password = req.body.password;
 
     console.log("POST /login " + username + ":" + password);
     res.status(200).json({status: 'ok'});
+
+    var User = mongoose.model('Login', models.Login);
+
+    User.findOne({user: username, password: password}, function (err, user){
+      if (err) return handleError(err);
+      console.log('%s has password %s', user.user, user.password);
+    });
+
   });
 
-  runningApp.post('/entry', function(req, res) {
+  runningApp.post('/entry', function(req, res) { //create new url/location entry
     var userid = req.body.id;
     var url = req.body.url;
     var location = req.body.location;
 
     console.log("POST /entry id:" + userid + ", url:" + url + ", location:" + location);
     res.status(200).json({status: 'ok'});
+
+    
+    var Entry = mongoose.model('Entry', models.Entry);   //create entry object
+
+    var entry = new Entry ({                      //create entry JSON
+      id: userid,
+      url: url
+    })
+
+    entry.save(function(err, entry){
+      if (err) return console.error(err);
+      console.dir(entry);
+    });
   });
   
   // If you need websockets:

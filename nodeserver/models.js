@@ -1,15 +1,23 @@
 var mongoose = require('mongoose'),
 	Schema = mongoose.Schema,
-	ObjectID = Schema.ObjectID;
+	ObjectID = Schema.Types.ObjectID;
 
 
-var loginSchema = new Schema({
+var Login = new Schema ({
 	user: 		{type: String},
-	password: 	{type: String},
-	id: 		{type: int}  
+	password: 	{type: String}
+	//pictures: 	{type: [String]}
 });
 
-var entrySchema = new Schema({
-	id: 		{type: int},
+var Entry = new Schema({
+	id: 		{type: String},
 	url:  		{type: String} 
-})
+});
+	
+
+
+module.exports = {
+	Login: Login,
+	Entry: Entry
+}
+
