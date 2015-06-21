@@ -67,7 +67,7 @@ server.setup(function(runningApp) {
     });
   });
 
-  runningApp.post('/delete_user', function(req, res){
+  runningApp.post('/delete_entry', function(req, res){
     var Entry = mongoose.model('Entry', models.Entry);
 
     Entry.remove({}, function(err) {
