@@ -8,12 +8,11 @@ var Login = new Schema ({
 				 unique: true},
 	password: 	{type: String},
 	number:     {type: String}
-	//pictures: 	{type: [String]}
+	//pictures: 	{type: [Entry]}
 });
 
 var Entry = new Schema({
-	id: 		{type: String,
-				 unique: true},
+	id: 		{type: String},
 	url:  		{type: String} 
 });
 

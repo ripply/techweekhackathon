@@ -61,10 +61,20 @@ server.setup(function(runningApp) {
     var Entry = mongoose.model('Entry', models.Entry);
 
     Entry.find(function (err, contestants){      
-      if (err) return console.error(err);
-      console.log(contestants);
+      if (err) return console.error(err);   
+      //console.log(contestants); //test to see if array is passing contestants
       var rand = contestants[Math.floor(Math.random() * contestants.length)];
-      //console.log(rand);
+      console.log(rand);
+    });
+  });
+
+  runningApp.get('/list_entries', function(req, res){
+    var Entry = mongoose.model('Entry', models.Entry);
+
+    Entry.find(function (err, entries){
+      if (err) return console.error(err);
+      res.status(200).json(entries);
+      console.dir(entries);
     });
   });
 
