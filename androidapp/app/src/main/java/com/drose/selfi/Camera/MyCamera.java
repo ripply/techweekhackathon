@@ -90,10 +90,19 @@ public class MyCamera extends BaseFragment implements Button.OnClickListener{
             @Override
             public void onClick(View v) {
 
-                    String url = "http://mobile.twitter.com";
-                    Intent i = new Intent(Intent.ACTION_VIEW);
-                    i.setData(Uri.parse(url));
-                    startActivity(i);
+//                    String url = "http://mobile.twitter.com";
+//                    Intent i = new Intent(Intent.ACTION_VIEW);
+//                    i.setData(Uri.parse(url));
+//                    startActivity(i);
+                CameraActivity activity = (CameraActivity)getActivity();
+                File f = new File(activity.getCurrentPhotoPath());  //optional //internal storage
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "hi");
+                shareIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(f));  //optional//use this when you want to send an image
+                shareIntent.setType("image/jpeg");
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(Intent.createChooser(shareIntent, "send"));
             }
         });
         return view;
@@ -242,3 +251,11 @@ public class MyCamera extends BaseFragment implements Button.OnClickListener{
 
 
 }
+
+
+
+
+
+
+
+
