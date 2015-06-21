@@ -1,17 +1,13 @@
 
 
-curl -X POST -v --user cSBDurL3fAKUXb4O8QME2wJ -H "Content-Type: application/json" -d '{
-    "destination": 8159807857,
-    "internal_caller_id_number":"8159807857",
-    "internal_caller_id_name": "Six Flags",
-    "destination_type": "outbound",
-    "schedule": "+4 seconds",
-    "application": "Demo Application",
-}' https://api.us1.corvisa.io/channel/schedule
+curl -X POST -v --user rkP3JyuqxS1aYizGc6jeU:hnU8FAaNmMorPZwcWkl1DK5CdSfvRg -H "Content-Type: application/json" -d '{"destination":“8159807857”,"internal_caller_id_number":"8159807857","internal_caller_id_name": "Six Flags","destination_type": "outbound","schedule": "+4 seconds","application": "Demo Application"}' https://api.us1.corvisa.io/channel/schedule
 
 
 
 
-Key: cSBDurL3fAKUXb4O8QME2wJ
+Key: rkP3JyuqxS1aYizGc6jeU
 
-Secret: JqEetdV/5jaB0.m$W2yiho!N7URZDkCnz
+Secret: hnU8FAaNmMorPZwcWkl1DK5CdSfvRg
+
+
+curl -X POST -v --user rkP3JyuqxS1aYizGc6jeU -d To="+18159807857” -d From="%2B14143235878" -d Message="Hello and Congratulations! You have won the selfie competition. Stop by the visitor office before leaving the park to pick up your free season pass!" https://api.us1.corvisa.io/sms/send
