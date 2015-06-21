@@ -38,12 +38,14 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
     int major;
     int minor;
     public static String beaconUuid;
+    boolean goawayok; //yes i named a variable this, im sleepy
 
     Button buttonLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        goawayok = true;
         setContentView(R.layout.activity_main);
         inRange = false;
         hello = (TextView)findViewById(R.id.hello);
@@ -92,6 +94,12 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        goawayok = true;
     }
 
     @Override
@@ -166,6 +174,7 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
     public void onInRange(){
         Intent intent = new Intent(this, MainActivityC.class);
         if(inRange==true) {
+            goawayok = false;
             startActivity(intent);
         }
 

@@ -98,14 +98,16 @@ public class MyCamera extends BaseFragment implements Button.OnClickListener{
 //                    i.setData(Uri.parse(url));
 //                    startActivity(i);
                 CameraActivity activity = (CameraActivity)getActivity();
-                File f = new File(activity.getCurrentPhotoPath());  //optional //internal storage
-                Intent shareIntent = new Intent();
-                shareIntent.setAction(Intent.ACTION_SEND);
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "hi");
-                shareIntent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(f));  //optional//use this when you want to send an image
-                shareIntent.setType("image/jpeg");
-                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                startActivity(Intent.createChooser(shareIntent, "send"));
+                if (activity.getCurrentPhotoPath() != null) {
+                    File f = new File(activity.getCurrentPhotoPath());  //optional //internal storage
+                    Intent shareIntent = new Intent();
+                    shareIntent.setAction(Intent.ACTION_SEND);
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, "hi");
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(f));  //optional//use this when you want to send an image
+                    shareIntent.setType("image/jpeg");
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivityForResult(Intent.createChooser(shareIntent, "send"), 4444);
+                }
             }
         });
         return view;
@@ -168,8 +170,7 @@ public class MyCamera extends BaseFragment implements Button.OnClickListener{
             // Show the full sized image.
             setFullImageFromFilePath(activity.getCurrentPhotoPath(), mImageView);
             setFullImageFromFilePath(activity.getCurrentPhotoPath(), mThumbnailImageView);
-        }
-        else if(resultCode == Activity.RESULT_OK) {
+        } else if(requestCode == 4444 && resultCode == Activity.RESULT_OK) {
             AccountManager.getInstance().enter("123", MainActivity.beaconUuid, new AccountCallback() {
                 @Override
                 public void loginComplete(boolean success) {
@@ -183,13 +184,22 @@ public class MyCamera extends BaseFragment implements Button.OnClickListener{
 
                 @Override
                 public void entryComplete(boolean success) {
-                    
+                    final boolean finalSuccess = success;
+                    getActivity().runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            if (finalSuccess) {
+                                Toast.makeText(getActivity(), "You were entered in the drawing!", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getActivity(), "An error occured :(", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
                 }
             });
 
-        }
-
-        else {
+        } else {
             Toast.makeText(getActivity(), "Image Capture Failed", Toast.LENGTH_SHORT)
                     .show();
         }

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.zebra.mpact.mpactclient.MPactBeaconType;
 import com.zebra.mpact.mpactclient.MPactClientNotifier;
@@ -44,13 +45,11 @@ public class RegionNotifier implements MPactClientNotifier {
         } else if(state == MPactClientNotifier.OUTSIDE) {
             notify("");
         }
-        //updateActivityRegionState(state);
         regionState = state;
     }
 
     @Override
     public void didDetermineState(int i, Integer integer, Integer integer2) {
-
     }
 
     @Override
@@ -60,7 +59,6 @@ public class RegionNotifier implements MPactClientNotifier {
 
     @Override
     public void didChangeBeaconType(MPactBeaconType mPactBeaconType) {
-
     }
 
     @Override
@@ -71,7 +69,7 @@ public class RegionNotifier implements MPactClientNotifier {
     private void notify(String msg) {
         // Generate a notification
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
-                //.setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Selfie Opportunity!")
                 .setContentText(msg);
         Intent resultIntent = new Intent(context, MainActivity.class);
