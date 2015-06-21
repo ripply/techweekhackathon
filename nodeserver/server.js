@@ -48,6 +48,15 @@ server.setup(function(runningApp) {
 
     console.log("POST /login " + username + ":" + password);
 
+    if (username === undefined ||
+        username === null ||
+        username == '' ||
+        password === undefined ||
+        password === null ||
+        password === '') {
+      res.status(401).json({status: 'FORBIDDEN'});
+    }
+
     var User = mongoose.model('Login', models.Login);
 
     User.findOne({user: username, password: password}, function (err, user){
