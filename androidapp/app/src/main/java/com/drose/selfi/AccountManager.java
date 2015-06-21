@@ -12,7 +12,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -58,12 +57,12 @@ public class AccountManager {
 
     public void login(String username, String password, AccountCallback callback) {
         LoginTask loginTask = new LoginTask(username, password, callback);
-        loginTask.execute(null);
+        loginTask.execute();
     }
 
     public void signup(String username, String password, String number, AccountCallback callback) {
         SignupTask signupTask = new SignupTask(username, password, number, callback);
-        signupTask.execute(null);
+        signupTask.execute();
     }
 
     public void logout() {

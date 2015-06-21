@@ -1,7 +1,6 @@
 package com.drose.selfi.Camera;
 
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -43,7 +42,7 @@ public class MainActivityC extends CameraActivity implements
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
-            Intent intent = getIntent();
+
 
             mNavigationDrawerFragment = (NavigationDrawerFragment)
                     getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
