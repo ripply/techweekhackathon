@@ -24,6 +24,7 @@ server.setup(function(runningApp) {
   runningApp.post('/user', function(req, res) { //create new user
     var username = req.body.user;
     var password = req.body.password;
+    var number = req.body.number;
 
     console.log("POST /user " + username + ":" + password);
 
@@ -31,7 +32,8 @@ server.setup(function(runningApp) {
 
     var user = new login ({                     // Json for new user
       user:     username,
-      password: password
+      password: password,
+      number:   number
     });
 
     user.save(function(err, user) {           //save new user
