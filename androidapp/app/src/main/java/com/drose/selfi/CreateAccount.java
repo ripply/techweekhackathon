@@ -1,12 +1,15 @@
 package com.drose.selfi;
 
+import android.content.Context;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class CreateAccount extends ActionBarActivity {
@@ -14,6 +17,8 @@ public class CreateAccount extends ActionBarActivity {
     Button createAccount;
     EditText editTextUserName;
     EditText editTextPassword;
+
+    private String number;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +29,42 @@ public class CreateAccount extends ActionBarActivity {
         editTextUserName = (EditText) findViewById(R.id.editTextUsername);
         editTextPassword = (EditText) findViewById(R.id.editTextPassword);
 
+        final Context context = getBaseContext();
+
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AccountManager.getInstance().signup(editTextUserName.getText().toString(), editTextPassword.getText().toString());
+                AccountManager.getInstance().signup(editTextUserName.getText().toString(), editTextPassword.getText().toString(), getPhoneNumber(), new AccountCallback() {
+                    @Override
+                    public void loginComplete(boolean success) {
+
+                    }
+
+                    @Override
+                    public void signupComplete(boolean success) {
+                        final boolean finalSuccess = success;
+                        runOnUiThread(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                if (finalSuccess) {
+                                    Toast.makeText(context, "Successfully signed up!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(context, "Failed to sign up :(", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                });
             }
         });
     }
 
+    private String getPhoneNumber() {
+        TelephonyManager tMgr = (TelephonyManager)getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+        number = tMgr.getLine1Number();
+        return number;
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

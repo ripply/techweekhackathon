@@ -6,13 +6,13 @@ var mongoose = require('mongoose'),
 var Login = new Schema ({
 	user: 		{type: String,
 				 unique: true},
-	password: 	{type: String}
-	//pictures: 	{type: [String]}
+	password: 	{type: String},
+	number:     {type: String}
+	//pictures: 	{type: [Entry]}
 });
 
 var Entry = new Schema({
-	id: 		{type: String,
-				 unique: true},
+	id: 		{type: String},
 	url:  		{type: String} 
 });
 

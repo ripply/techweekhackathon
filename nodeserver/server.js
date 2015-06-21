@@ -24,20 +24,21 @@ server.setup(function(runningApp) {
   runningApp.post('/user', function(req, res) { //create new user
     var username = req.body.user;
     var password = req.body.password;
+    var number = req.body.number;
 
     console.log("POST /user " + username + ":" + password);
-    res.status(200).json({status: 'ok'});
 
     var login = mongoose.model('Login', models.Login); //create Login object
 
     var user = new login ({                     // Json for new user
       user:     username,
-      password: password
+      password: password,
+      number:   number
     });
 
     user.save(function(err, user) {           //save new user
-      if (err) return console.error(err);
-      console.dir(user);
+      if (err || user == null) {return res.status(403).json(err);}
+      res.status(200).json({id: user.id});
     });
   });
 
@@ -50,7 +51,7 @@ server.setup(function(runningApp) {
     var User = mongoose.model('Login', models.Login);
 
     User.findOne({user: username, password: password}, function (err, user){
-      if (err || user === null) { return res.status(403).json({status: 'UNAUTHORIZED'});}
+      if (err || user === null) { return res.status(401).json({status: 'FORBIDDEN'});}
       res.status(200).json({id: user.id});
     });
 
@@ -60,10 +61,20 @@ server.setup(function(runningApp) {
     var Entry = mongoose.model('Entry', models.Entry);
 
     Entry.find(function (err, contestants){      
-      if (err) return console.error(err);
-      console.log(contestants);
+      if (err) return console.error(err);   
+      //console.log(contestants); //test to see if array is passing contestants
       var rand = contestants[Math.floor(Math.random() * contestants.length)];
-      //console.log(rand);
+      console.log(rand);
+    });
+  });
+
+  runningApp.get('/list_entries', function(req, res){
+    var Entry = mongoose.model('Entry', models.Entry);
+
+    Entry.find(function (err, entries){
+      if (err) return console.error(err);
+      res.status(200).json(entries);
+      console.dir(entries);
     });
   });
 
@@ -89,7 +100,7 @@ server.setup(function(runningApp) {
     var entry = new Entry ({                      //create entry JSON
       id: userid,
       url: url
-    })
+    });
 
     entry.save(function(err, entry){
       if (err) return console.error(err);
