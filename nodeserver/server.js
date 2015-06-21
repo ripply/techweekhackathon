@@ -57,18 +57,18 @@ server.setup(function(runningApp) {
 
   });
 
-  runningApp.get('/pick_winner', function(req, res){
+  runningApp.get('/pick_winner', function(req, res){    //picks randomly the winner of the contest
     var Entry = mongoose.model('Entry', models.Entry);
 
     Entry.find(function (err, contestants){      
-      if (err) return console.error(err);   
+      if (err) return res.status(403).json({status: "ERROR"});   
       //console.log(contestants); //test to see if array is passing contestants
       var rand = contestants[Math.floor(Math.random() * contestants.length)];
-      console.log(rand);
+      res.status(200).json(rand);
     });
   });
 
-  runningApp.get('/list_entries', function(req, res){
+  runningApp.get('/list_entries', function(req, res){   //administrator gets list of all entries in the system
     var Entry = mongoose.model('Entry', models.Entry);
 
     Entry.find(function (err, entries){
@@ -77,6 +77,14 @@ server.setup(function(runningApp) {
       console.dir(entries);
     });
   });
+
+  runningApp.get('/list_users', function(req, res){ //administrator gets list of all users in the system
+    var User = mongoose.model('Login', models.Login);
+    User.find(function (err, users){
+      if (err) return res.status(401).json({status: 'FORBIDDEN'});
+      res.status(200).json(users);  
+    });
+  })
 
   runningApp.post('/delete_entry', function(req, res){
     var Entry = mongoose.model('Entry', models.Entry);
@@ -90,8 +98,9 @@ server.setup(function(runningApp) {
     var userid = req.body.id;
     var url = req.body.url;
     var location = req.body.location;
+    var date = new Date().getTime();
 
-    console.log("POST /entry id:" + userid + ", url:" + url + ", location:" + location);
+    console.log("POST /entry id:" + userid + ", url:" + url + ", location:" + location + ", time:" + date);
     res.status(200).json({status: 'ok'});
 
     
@@ -99,7 +108,9 @@ server.setup(function(runningApp) {
 
     var entry = new Entry ({                      //create entry JSON
       id: userid,
-      url: url
+      url: url,
+      location: location,
+      time: date
     });
 
     entry.save(function(err, entry){
