@@ -56,6 +56,25 @@ server.setup(function(runningApp) {
 
   });
 
+  runningApp.get('/pick_winner', function(req, res){
+    var Entry = mongoose.model('Entry', models.Entry);
+
+    Entry.find(function (err, contestants){      
+      if (err) return console.error(err);
+      console.log(contestants);
+      var rand = contestants[Math.floor(Math.random() * contestants.length)];
+      //console.log(rand);
+    });
+  });
+
+  runningApp.post('/delete_user', function(req, res){
+    var Entry = mongoose.model('Entry', models.Entry);
+
+    Entry.remove({}, function(err) {
+      console.location('collection removed');
+    });
+  })
+
   runningApp.post('/entry', function(req, res) { //create new url/location entry
     var userid = req.body.id;
     var url = req.body.url;

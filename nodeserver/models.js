@@ -15,11 +15,6 @@ var Entry = new Schema({
 				 unique: true},
 	url:  		{type: String} 
 });
-	
-var Admin = new Schema({
-	entries: [Entry]
-	
-});
 
 module.exports = {
 	Login: Login,
