@@ -59,15 +59,36 @@ server.setup(function(runningApp) {
 
   runningApp.get('/pick_winner', function(req, res){    //picks randomly the winner of the contest
     var Entry = mongoose.model('Entry', models.Entry);
-
     Entry.find(function (err, contestants){      
       if (err) return res.status(403).json(err);
       //console.log(contestants); //test to see if array is passing contestants
       var rand = contestants[Math.floor(Math.random() * contestants.length)];
-      res.status(200).json(rand);
+      res.status(200).json({user: rand.id});
+      //var newID = rand.id;
+      //console.log("THIS IS BEFORE IT LEAVES THE FUNCTION: " + newID);
+
+      /*var User = mongoose.model('Login', models.Login);
+
+      var wut = User.findOne({user: newID}, function (err, user){
+        if (err || user === null) return console.error(err);
+        res.status(200).json({user: username, number: number});
+      });
+      console.log(wut);
+      return wut;*/
     });
   });
 
+  runningApp.post('/get_number', function(req, res){
+    var username = req.body.user;
+
+    console.log("POST /get_number " + username);
+    var User = mongoose.model('Login', models.Login);
+
+    User.findOne({user: username}, function (err, user){
+      if (err || user === null) return res.status(404).json(err);
+      res.status(200).json({number: number}) 
+    })
+  });
   runningApp.get('/list_entries', function(req, res){   //administrator gets list of all entries in the system
     var Entry = mongoose.model('Entry', models.Entry);
 
@@ -76,7 +97,7 @@ server.setup(function(runningApp) {
       res.status(200).json(entries);
       console.dir(entries);
     });
-  });
+  }); 
 
   runningApp.get('/list_users', function(req, res){ //administrator gets list of all users in the system
     var User = mongoose.model('Login', models.Login);
@@ -86,9 +107,10 @@ server.setup(function(runningApp) {
     });
   });
 
+  
+
   runningApp.delete('/entry', function(req, res){
     var Entry = mongoose.model('Entry', models.Entry);
-
     Entry.remove({}, function(err) {
       console.location('collection removed');
       if (err) {return res.status(400).json(err);}
