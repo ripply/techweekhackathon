@@ -51,7 +51,7 @@ server.setup(function(runningApp) {
 
     User.findOne({user: username, password: password}, function (err, user){
       if (err) return res.status(403).json({status: 'UNAUTHORIZED'});
-      res.status(200).json({id: user.id});
+      res.status(200).json({id: username.id});
     });
 
   });
