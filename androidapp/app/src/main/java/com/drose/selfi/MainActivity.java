@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -38,12 +39,22 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
     int minor;
     String beaconUuid;
 
+    Button buttonLogout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         inRange = false;
         hello = (TextView)findViewById(R.id.hello);
+
+        buttonLogout = (Button) findViewById(R.id.buttonLogout);
+        buttonLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
 
         AccountManager.getInstance().setSharedPreferences(getPreferences(MODE_PRIVATE));
 
@@ -56,9 +67,24 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
         CookieHandler.setDefault(cookieManager);
 
         if (!AccountManager.getInstance().signedIn()) {
-            Intent createAccount = new Intent(this, CreateAccount.class);
-            startActivity(createAccount);
+            launchLoginActivity();
+        } else if (inRange) {
+            launchSelfieActivity();
         }
+    }
+
+    private void launchSelfieActivity() {
+        onInRange();
+    }
+
+    private void launchLoginActivity() {
+        Intent createAccount = new Intent(this, LoginActivity.class);
+        startActivity(createAccount);
+    }
+
+    public void logout() {
+        AccountManager.getInstance().logout();
+        launchLoginActivity();
     }
 
     @Override
@@ -110,7 +136,8 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
             mpactClient.Start();
         } catch (RemoteException e) {
             e.printStackTrace();
-        }*/
+        }
+        */
     }
 
     @Override
@@ -129,6 +156,10 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
                 break;
             default:
                 break;
+        }
+
+        if (inRange) {
+            launchSelfieActivity();
         }
     }
 
@@ -158,6 +189,10 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
         }
         if (minor != null) {
             this.minor = minor.intValue();
+        }
+
+        if (inRange) {
+            launchSelfieActivity();
         }
     }
 

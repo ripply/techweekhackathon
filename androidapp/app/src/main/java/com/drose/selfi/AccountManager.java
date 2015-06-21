@@ -66,6 +66,17 @@ public class AccountManager {
         signupTask.execute(null);
     }
 
+    public void logout() {
+        if (userId != null || userId.length() > 0) {
+            if (this.preferences != null) {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putString("id", "");
+                editor.commit();
+            }
+        }
+        this.userId = null;
+    }
+
     public boolean signedIn() {
         if (userId == null || userId.length() == 0) {
             if (preferences != null) {
@@ -186,10 +197,6 @@ public class AccountManager {
             callback.signupComplete(false);
             return null;
         }
-    }
-
-    public void logout() {
-        userId = null;
     }
 
     private HttpResponse postData(String resource, List<NameValuePair> pairs) {
