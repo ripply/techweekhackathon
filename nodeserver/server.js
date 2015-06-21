@@ -55,6 +55,7 @@ server.setup(function(runningApp) {
         password === null ||
         password === '') {
       res.status(401).json({status: 'FORBIDDEN'});
+      return null;
     }
 
     var User = mongoose.model('Login', models.Login);
