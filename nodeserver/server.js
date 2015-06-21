@@ -26,7 +26,6 @@ server.setup(function(runningApp) {
     var password = req.body.password;
 
     console.log("POST /user " + username + ":" + password);
-    res.status(200).json({status: 'ok'});
 
     var login = mongoose.model('Login', models.Login); //create Login object
 
@@ -36,8 +35,8 @@ server.setup(function(runningApp) {
     });
 
     user.save(function(err, user) {           //save new user
-      if (err) return console.error(err);
-      console.dir(user);
+      if (err || user == null) {return res.status(403).json({status: "ERROR"});}
+      res.status(200).json({status: 'ok'});
     });
   });
 
@@ -50,7 +49,7 @@ server.setup(function(runningApp) {
     var User = mongoose.model('Login', models.Login);
 
     User.findOne({user: username, password: password}, function (err, user){
-      if (err || user === null) { return res.status(403).json({status: 'UNAUTHORIZED'});}
+      if (err || user === null) { return res.status(401).json({status: 'FORBIDDEN'});}
       res.status(200).json({id: user.id});
     });
 
