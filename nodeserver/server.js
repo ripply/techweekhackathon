@@ -50,7 +50,7 @@ server.setup(function(runningApp) {
     var User = mongoose.model('Login', models.Login);
 
     User.findOne({user: username, password: password}, function (err, user){
-      if (err) return res.status(403).json({status: 'UNAUTHORIZED'});
+      if (err || user === null) { return res.status(403).json({status: 'UNAUTHORIZED'});}
       res.status(200).json({id: user.id});
     });
 
