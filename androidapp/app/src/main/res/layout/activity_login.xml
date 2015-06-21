@@ -25,9 +25,10 @@
         android:inputType="textPersonName"
         android:hint="username"
         android:ems="10"
+        android:textColor="#000"
         android:id="@+id/editText3"
         android:autoText="false"
-        android:background="@color/secondary_text_disabled_material_dark"
+        android:background="@color/accent_material_dark"
         android:layout_centerVertical="true"
         android:layout_alignStart="@+id/editText4" />
 
@@ -36,9 +37,10 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
+        android:textColor="#000"
         android:id="@+id/editText4"
         android:hint="password"
-        android:background="@color/secondary_text_disabled_material_dark"
+        android:background="@color/accent_material_dark"
         android:layout_below="@+id/editText3"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="37dp" />
@@ -49,7 +51,7 @@
         android:layout_height="wrap_content"
         android:text="Signup"
         android:id="@+id/buttonSignUp"
-        android:background="@android:color/transparent"
+
         android:layout_marginBottom="37dp"
         android:layout_alignBottom="@+id/imageView"
         android:layout_alignStart="@+id/button2"
@@ -61,7 +63,7 @@
         android:text="Log In"
         android:textSize="@dimen/font_size"
         android:id="@+id/button2"
-        android:background="@android:color/transparent"
+
         android:layout_above="@+id/buttonSignUp"
         android:layout_alignStart="@+id/editText4"
         android:layout_alignEnd="@+id/editText4"
