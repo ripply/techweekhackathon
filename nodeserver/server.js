@@ -89,7 +89,7 @@ server.setup(function(runningApp) {
     var entry = new Entry ({                      //create entry JSON
       id: userid,
       url: url
-    })
+    });
 
     entry.save(function(err, entry){
       if (err) return console.error(err);
