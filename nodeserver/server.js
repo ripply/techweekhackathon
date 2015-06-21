@@ -72,7 +72,7 @@ server.setup(function(runningApp) {
     var Entry = mongoose.model('Entry', models.Entry);
 
     Entry.find(function (err, entries){
-      if (err) return console.error(err);
+      if (err) return res.status(400).json(err);
       res.status(200).json(entries);
       console.dir(entries);
     });
@@ -81,18 +81,20 @@ server.setup(function(runningApp) {
   runningApp.get('/list_users', function(req, res){ //administrator gets list of all users in the system
     var User = mongoose.model('Login', models.Login);
     User.find(function (err, users){
-      if (err) return res.status(401).json({status: 'FORBIDDEN'});
+      if (err) return res.status(401).json(err);
       res.status(200).json(users);  
     });
-  })
+  });
 
   runningApp.post('/delete_entry', function(req, res){
     var Entry = mongoose.model('Entry', models.Entry);
 
     Entry.remove({}, function(err) {
       console.location('collection removed');
+      if (err) {return res.status(400).json(err);}
+      res.send(200);
     });
-  })
+  });
 
   runningApp.post('/entry', function(req, res) { //create new url/location entry
     var userid = req.body.id;
@@ -101,9 +103,7 @@ server.setup(function(runningApp) {
     var date = new Date().getTime();
 
     console.log("POST /entry id:" + userid + ", url:" + url + ", location:" + location + ", time:" + date);
-    res.status(200).json({status: 'ok'});
 
-    
     var Entry = mongoose.model('Entry', models.Entry);   //create entry object
 
     var entry = new Entry ({                      //create entry JSON
@@ -114,8 +114,8 @@ server.setup(function(runningApp) {
     });
 
     entry.save(function(err, entry){
-      if (err) return console.error(err);
-      console.dir(entry);
+      if (err) {return res.status(400).json(err);}
+      res.status(200).json(entry);
     });
   });
   
