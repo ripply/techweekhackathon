@@ -100,7 +100,7 @@ server.setup(function(runningApp) {
     var userid = req.body.id;
     var url = req.body.url;
     var location = req.body.location;
-    var date = new Date().getTime();
+    var date = Date.now();
 
     console.log("POST /entry id:" + userid + ", url:" + url + ", location:" + location + ", time:" + date);
 

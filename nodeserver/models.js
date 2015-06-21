@@ -13,7 +13,9 @@ var Login = new Schema ({
 
 var Entry = new Schema({
 	id: 		{type: String},
-	url:  		{type: String} 
+	url:  		{type: String},
+	location:   {type: String},
+	time:       {type: Date}
 });
 
 module.exports = {
