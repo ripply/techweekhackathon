@@ -19,7 +19,7 @@
         $.ajax({
             url: '/pick_winner',
             success: function(data, textStatus, jqXHR) {
-                alert();
+                alert(data);
             }
         })
     });
@@ -50,7 +50,7 @@
     <table>
       {{#each Entries}}
       <tr>
-        <td></td>
+        <td>{{url}}</td>
       </tr>
       {{/each}}
     </table>
