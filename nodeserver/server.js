@@ -52,7 +52,7 @@ server.setup(function(runningApp) {
 
     User.findOne({user: username, password: password}, function (err, user){
       if (err) return handleError(err);
-      console.log('%s has password %s', user.user, user.password);
+      console.dir(username);
     });
 
   });

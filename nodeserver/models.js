@@ -4,17 +4,22 @@ var mongoose = require('mongoose'),
 
 
 var Login = new Schema ({
-	user: 		{type: String},
+	user: 		{type: String,
+				 unique: true},
 	password: 	{type: String}
 	//pictures: 	{type: [String]}
 });
 
 var Entry = new Schema({
-	id: 		{type: String},
+	id: 		{type: String
+				 unique: true},
 	url:  		{type: String} 
 });
 	
-
+var Admin = new Schema({
+	entries: [Entry],
+	
+})
 
 module.exports = {
 	Login: Login,
