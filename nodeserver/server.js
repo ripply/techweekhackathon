@@ -103,6 +103,7 @@ server.setup(function(runningApp) {
 
   //connect to Mongo (mongoose):
   mongoose.connect('mongodb://localhost/test');
+  //mongoose.connection.db.dropCollection();
   mongoose.connection.on('error', console.error.bind(console, 'connection error: '));
   mongoose.connection.on('open', function(callback) {
     console.log("Connected to Mongoose...");
