@@ -8,7 +8,6 @@ public class NotifyApplication extends Application {
         super.onCreate();
 
         // Start up the background beacon monitoring service
-        System.out.println("***********************************************************************");
         Intent myIntent = new Intent(this, MonitorService.class);
         startService(myIntent);
     }
