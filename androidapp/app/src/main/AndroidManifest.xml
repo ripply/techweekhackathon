@@ -44,6 +44,10 @@
             android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
         </activity>
+        <activity
+            android:name="com.drose.selfi.Camera.MainActivityC"
+            android:label="MainActivityC" >
+        </activity>
     </application>
 
 </manifest>
