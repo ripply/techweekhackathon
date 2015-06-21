@@ -50,8 +50,8 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
         cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
 
-        //Intent createAccount = new Intent(this, CreateAccount.class);
-        //startActivity(createAccount);
+        Intent createAccount = new Intent(this, CreateAccount.class);
+        startActivity(createAccount);
     }
 
     @Override
@@ -98,12 +98,12 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
         mpactServerInfo.setAuthenticate(true);
         //mpactClient.setServer(mpactServerInfo);
         //mpactClient.setiBeaconUUID("fe913213-b311-4a42-8c16-47fae-ac938db");
-
+/*
         try {
             mpactClient.Start();
         } catch (RemoteException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override

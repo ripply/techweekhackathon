@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
 var Login = new Schema ({
 	user: 		{type: String,
 				 unique: true},
-	password: 	{type: String}
+	password: 	{type: String},
+	number:     {type: String}
 	//pictures: 	{type: [String]}
 });
 
