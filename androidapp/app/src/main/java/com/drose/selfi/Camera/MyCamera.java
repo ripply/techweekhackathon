@@ -19,6 +19,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.drose.selfi.AccountCallback;
+import com.drose.selfi.AccountManager;
+import com.drose.selfi.MainActivity;
 import com.drose.selfi.R;
 
 import java.io.File;
@@ -165,7 +168,28 @@ public class MyCamera extends BaseFragment implements Button.OnClickListener{
             // Show the full sized image.
             setFullImageFromFilePath(activity.getCurrentPhotoPath(), mImageView);
             setFullImageFromFilePath(activity.getCurrentPhotoPath(), mThumbnailImageView);
-        } else {
+        }
+        else if(resultCode == Activity.RESULT_OK) {
+            AccountManager.getInstance().enter("123", MainActivity.beaconUuid, new AccountCallback() {
+                @Override
+                public void loginComplete(boolean success) {
+
+                }
+
+                @Override
+                public void signupComplete(boolean success) {
+
+                }
+
+                @Override
+                public void entryComplete(boolean success) {
+                    
+                }
+            });
+
+        }
+
+        else {
             Toast.makeText(getActivity(), "Image Capture Failed", Toast.LENGTH_SHORT)
                     .show();
         }

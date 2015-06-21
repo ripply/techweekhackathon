@@ -37,7 +37,7 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
     boolean inRange;
     int major;
     int minor;
-    String beaconUuid;
+    public static String beaconUuid;
 
     Button buttonLogout;
 
@@ -142,7 +142,7 @@ public class MainActivity extends ActionBarActivity implements MPactClientConsum
 
     @Override
     public void didDetermineClosestTag(MPactTag mPactTag) {
-        Toast.makeText(this, "Determined closest tag", Toast.LENGTH_SHORT).show();
+    //    Toast.makeText(this, "Determined closest tag", Toast.LENGTH_SHORT).show();
     }
 
     @Override
